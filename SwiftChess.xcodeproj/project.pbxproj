@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		82DB4F76278D344200CCCD73 /* SwiftChess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SwiftChess; sourceTree = BUILT_PRODUCTS_DIR; };
 		82DB4F79278D344200CCCD73 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		82DB4F80278D34D200CCCD73 /* ChessKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChessKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +42,7 @@
 		82DB4F6D278D344200CCCD73 = {
 			isa = PBXGroup;
 			children = (
+				82DB4F80278D34D200CCCD73 /* ChessKit */,
 				82DB4F78278D344200CCCD73 /* SwiftChess */,
 				82DB4F77278D344200CCCD73 /* Products */,
 			);
@@ -246,8 +248,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EX869FGDHJ;
+				DEVELOPMENT_TEAM = 9A3742UGVG;
 				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.piebie.SwiftChess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -257,8 +260,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EX869FGDHJ;
+				DEVELOPMENT_TEAM = 9A3742UGVG;
 				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.piebie.SwiftChess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
