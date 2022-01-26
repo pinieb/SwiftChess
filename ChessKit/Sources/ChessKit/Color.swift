@@ -3,3 +3,5 @@ public enum Color: Int {
      case black
      case all
 }
+
+extension Color: CaseIterable {}

@@ -7,3 +7,5 @@ public enum PieceType: Int {
     case king
     case all
 }
+
+extension PieceType: CaseIterable {}
