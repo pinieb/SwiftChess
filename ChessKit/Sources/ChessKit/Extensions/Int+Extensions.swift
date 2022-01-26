@@ -19,12 +19,40 @@ extension Int {
 
         var index = 0
         while current != 0 {
-            if current & 1 == 1 {
+            if current[0] {
                 body(index)
             }
 
             current >>= 1
             index += 1
         }
+    }
+
+    var first: Int? {
+        var current = self
+        var index = 0
+        while current != 0 {
+            guard !current[0] else {
+                return index
+            }
+
+            current >>= 1
+            index += 1
+        }
+
+        return nil
+    }
+
+    var last: Int? {
+        guard self != 0 else { return nil }
+
+        var current = self
+        var index = 0
+        while current != 0 {
+            current >>= 1
+            index += 1
+        }
+
+        return index
     }
 }
