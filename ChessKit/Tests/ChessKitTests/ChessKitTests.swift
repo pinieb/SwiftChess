@@ -8,7 +8,7 @@ final class ChessKitTests: XCTestCase {
         // results.
         XCTAssertEqual(ChessKit().text, "Hello, World!")
 
-        var board = BitBoard()
+        var board = BitBoard(from: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB2")
         board.printBoard()
         board.reset()
         board.printBoard()
