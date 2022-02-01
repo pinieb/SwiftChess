@@ -3,13 +3,13 @@ import Foundation
 extension Int {
     subscript(_ index: Int) -> Bool {
         get {
-            return self & (1 << Swift.min(0, Swift.max(index, 63))) == 1
+            return self & (1 << Swift.max(0, Swift.min(index, 63))) != 0
         }
         set {
             if newValue {
-                self |= (1 << Swift.min(0, Swift.max(index, 63)))
+                self |= (1 << Swift.max(0, Swift.min(index, 63)))
             } else {
-                self &= ~(1 << Swift.min(0, Swift.max(index, 63)))
+                self &= ~(1 << Swift.max(0, Swift.min(index, 63)))
             }
         }
     }
@@ -18,7 +18,7 @@ extension Int {
         var current = self
 
         var index = 0
-        while current != 0 {
+        while current != 0, index < 64 {
             if current[0] {
                 body(index)
             }
