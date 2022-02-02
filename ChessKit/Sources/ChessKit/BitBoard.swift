@@ -128,7 +128,10 @@ public struct BitBoard: Board {
             moves = movesForRook(at: square,
                                  of: piece.color)
         case .queen:
-            moves = []
+            moves = movesForBishop(at: square,
+                                   of: piece.color) +
+             movesForRook(at: square,
+                          of: piece.color)
         case .king:
             moves = []
         default:
@@ -310,6 +313,20 @@ public struct BitBoard: Board {
                                   target: target,
                                   capturedPiece: targetOccupant))
             }
+        }
+
+        return moves
+    }
+
+    private func possibleQueenMoves(for color: Color) -> [Move] {
+        let queens = pieces[color][PieceType.queen]
+
+        var moves = [Move]()
+        queens.forEach { square in
+            moves.append(contentsOf: movesForBishop(at: square,
+                                                    of: color))
+            moves.append(contentsOf: movesForRook(at: square,
+                                                  of: color))
         }
 
         return moves
