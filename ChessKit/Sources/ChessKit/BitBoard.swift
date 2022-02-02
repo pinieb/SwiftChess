@@ -39,95 +39,6 @@ public struct BitBoard: Board {
 
             column += 1
         }
-
-//        var shift = 1
-//        for char in squares {
-//            guard char != "/" else { continue }
-//
-//            for color in Color.allCases {
-//                for piece in PieceType.allCases {
-//                    pieces[color][piece] <<= shift
-//                }
-//            }
-//
-//            if char.isNumber {
-//                shift = Int(String(char))!
-//            } else {
-//                shift = 1
-//            }
-//
-//            switch char {
-//            case "P":
-//                pieces[Color.white][PieceType.pawn][0] = true
-//                pieces[Color.white][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.pawn][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "p":
-//                pieces[Color.black][PieceType.pawn][0] = true
-//                pieces[Color.black][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.pawn][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "N":
-//                pieces[Color.white][PieceType.knight][0] = true
-//                pieces[Color.white][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.knight][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "n":
-//                pieces[Color.black][PieceType.knight][0] = true
-//                pieces[Color.black][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.knight][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "B":
-//                pieces[Color.white][PieceType.bishop][0] = true
-//                pieces[Color.white][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.bishop][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "b":
-//                pieces[Color.black][PieceType.bishop][0] = true
-//                pieces[Color.black][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.knight][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "R":
-//                pieces[Color.white][PieceType.rook][0] = true
-//                pieces[Color.white][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.rook][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "r":
-//                pieces[Color.black][PieceType.rook][0] = true
-//                pieces[Color.black][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.rook][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "Q":
-//                pieces[Color.white][PieceType.queen][0] = true
-//                pieces[Color.white][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.queen][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "q":
-//                pieces[Color.black][PieceType.queen][0] = true
-//                pieces[Color.black][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.queen][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "K":
-//                pieces[Color.white][PieceType.king][0] = true
-//                pieces[Color.white][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.king][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            case "k":
-//                pieces[Color.black][PieceType.king][0] = true
-//                pieces[Color.black][PieceType.all][0] = true
-//                pieces[Color.all][PieceType.king][0] = true
-//                pieces[Color.all][PieceType.all][0] = true
-//            default: continue
-//            }
-//        }
-//
-//        if shift > 1 {
-//            for color in Color.allCases {
-//                for piece in PieceType.allCases {
-//                    pieces[color][piece] <<= shift - 1
-//                }
-//            }
-//        }
     }
 
     private init(board: BitBoard) {
@@ -211,7 +122,8 @@ public struct BitBoard: Board {
             moves = movesForKnight(at: square,
                                    of: piece.color)
         case .bishop:
-            moves = []
+            moves = movesForBishop(at: square,
+                                   of: piece.color)
         case .rook:
             moves = []
         case .queen:
@@ -317,6 +229,49 @@ public struct BitBoard: Board {
         return moves
     }
 
+    private func possibleBishopMoves(for color: Color) -> [Move] {
+        let bishops = pieces[color][PieceType.bishop]
+
+        var moves = [Move]()
+        bishops.forEach { square in
+            moves.append(contentsOf: movesForBishop(at: square,
+                                                    of: color))
+        }
+
+        return moves
+    }
+
+    private func movesForBishop(at square: Int, of color: Color) -> [Move] {
+        var moves = [Move]()
+
+        for direction in 0 ..< 4 {
+            let blockedSquares = pieces[Color.all][PieceType.all] & Moves.bishopMoves[direction][square]
+
+            var firstHit: Int?
+            if direction < 2 {
+                firstHit = blockedSquares.first
+            } else {
+                firstHit = blockedSquares.last
+            }
+
+            var availableSquares = Moves.bishopMoves[direction][square]
+            if let firstHit = firstHit {
+                availableSquares ^= Moves.bishopMoves[direction][firstHit]
+            }
+
+            availableSquares.forEach { target in
+                let targetOccupant = getPiece(at: target)
+                guard targetOccupant?.color != color else { return }
+
+                moves.append(Move(source: square,
+                                  target: target,
+                                  capturedPiece: targetOccupant))
+            }
+        }
+
+        return moves
+    }
+
     private func possibleKingMoves(for color: Color) -> [Move] {
         let kings = pieces[color][PieceType.king]
 
@@ -334,40 +289,6 @@ public struct BitBoard: Board {
             }
 
             // TODO: Check castling
-        }
-
-        return moves
-    }
-
-    private func possibleBishopMoves(for color: Color) -> [Move] {
-        let bishops = pieces[color][PieceType.bishop]
-
-        var moves = [Move]()
-        bishops.forEach { source in
-            for direction in 0 ..< 4 {
-                let blockedSquares = pieces[Color.all][PieceType.all] & Moves.bishopMoves[direction][source]
-
-                var firstHit: Int?
-                if direction < 2 {
-                    firstHit = blockedSquares.first
-                } else {
-                    firstHit = blockedSquares.last
-                }
-
-                var availableSquares = Moves.bishopMoves[direction][source]
-                if let firstHit = firstHit {
-                    availableSquares ^= Moves.bishopMoves[direction][firstHit]
-                }
-
-                availableSquares.forEach { target in
-                    let targetOccupant = getPiece(at: target)
-                    guard targetOccupant?.color != color else { return }
-
-                    moves.append(Move(source: source,
-                                      target: target,
-                                      capturedPiece: targetOccupant))
-                }
-            }
         }
 
         return moves
@@ -443,6 +364,22 @@ public struct BitBoard: Board {
                 print(row)
                 row = ""
             }
+        }
+    }
+
+    public func printTargets(_ targets: Int, from square: Int) {
+        for row in (0 ..< 8).reversed() {
+            var line = ""
+            for col in 0 ..< 8 {
+                guard row * 8 + col != square else {
+                    line.append("X")
+                    continue
+                }
+
+                line.append(targets[row * 8 + col] ? "1" : "0")
+            }
+
+            print(line)
         }
     }
 }

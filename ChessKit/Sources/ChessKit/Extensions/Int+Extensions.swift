@@ -53,6 +53,6 @@ extension Int {
             index += 1
         }
 
-        return index
+        return index - 1
     }
 }
