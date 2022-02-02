@@ -125,7 +125,8 @@ public struct BitBoard: Board {
             moves = movesForBishop(at: square,
                                    of: piece.color)
         case .rook:
-            moves = []
+            moves = movesForRook(at: square,
+                                 of: piece.color)
         case .queen:
             moves = []
         case .king:
@@ -272,6 +273,48 @@ public struct BitBoard: Board {
         return moves
     }
 
+    private func possibleRookMoves(for color: Color) -> [Move] {
+        let rooks = pieces[color][PieceType.rook]
+
+        var moves = [Move]()
+        rooks.forEach { square in
+            moves.append(contentsOf: movesForRook(at: square,
+                                                  of: color))
+        }
+
+        return moves
+    }
+
+    private func movesForRook(at square: Int, of color: Color) -> [Move] {
+        var moves = [Move]()
+        for direction in 0 ..< 4 {
+            let blockedSquares = pieces[Color.all][PieceType.all] & Moves.rookMoves[direction][square]
+
+            var firstHit: Int?
+            if direction < 2 {
+                firstHit = blockedSquares.first
+            } else {
+                firstHit = blockedSquares.last
+            }
+
+            var availableSquares = Moves.rookMoves[direction][square]
+            if let firstHit = firstHit {
+                availableSquares ^= Moves.rookMoves[direction][firstHit]
+            }
+
+            availableSquares.forEach { target in
+                let targetOccupant = getPiece(at: target)
+                guard targetOccupant?.color != color else { return }
+
+                moves.append(Move(source: square,
+                                  target: target,
+                                  capturedPiece: targetOccupant))
+            }
+        }
+
+        return moves
+    }
+
     private func possibleKingMoves(for color: Color) -> [Move] {
         let kings = pieces[color][PieceType.king]
 
@@ -289,40 +332,6 @@ public struct BitBoard: Board {
             }
 
             // TODO: Check castling
-        }
-
-        return moves
-    }
-
-    private func possibleRookMoves(for color: Color) -> [Move] {
-        let rooks = pieces[color][PieceType.rook]
-
-        var moves = [Move]()
-        rooks.forEach { source in
-            for direction in 0 ..< 4 {
-                let blockedSquares = pieces[Color.all][PieceType.all] & Moves.rookMoves[direction][source]
-
-                var firstHit: Int?
-                if direction < 2 {
-                    firstHit = blockedSquares.first
-                } else {
-                    firstHit = blockedSquares.last
-                }
-
-                var availableSquares = Moves.rookMoves[direction][source]
-                if let firstHit = firstHit {
-                    availableSquares ^= Moves.rookMoves[direction][firstHit]
-                }
-
-                availableSquares.forEach { target in
-                    let targetOccupant = getPiece(at: target)
-                    guard targetOccupant?.color != color else { return }
-
-                    moves.append(Move(source: source,
-                                      target: target,
-                                      capturedPiece: targetOccupant))
-                }
-            }
         }
 
         return moves
