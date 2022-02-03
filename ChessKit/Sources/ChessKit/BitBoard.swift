@@ -133,7 +133,8 @@ public struct BitBoard: Board {
              movesForRook(at: square,
                           of: piece.color)
         case .king:
-            moves = []
+            moves = movesForKing(at: square,
+                                 for: piece.color)
         default:
             moves = []
         }
@@ -336,20 +337,29 @@ public struct BitBoard: Board {
         let kings = pieces[color][PieceType.king]
 
         var moves = [Move]()
-        kings.forEach { source in
-            Moves.kingMoves[source].forEach { target in
-                let targetOccupant = getPiece(at: target)
-                guard targetOccupant?.color != color else { return }
-
-                // TODO: Make sure move doesn't end in check
-
-                moves.append(Move(source: source,
-                                  target: target,
-                                  capturedPiece: targetOccupant))
-            }
-
-            // TODO: Check castling
+        kings.forEach { square in
+            moves.append(contentsOf: movesForKing(at: square,
+                                                  for: color))
         }
+
+        return moves
+    }
+
+    private func movesForKing(at square: Int, for color: Color) -> [Move] {
+        var moves = [Move]()
+
+        Moves.kingMoves[square].forEach { target in
+            let targetOccupant = getPiece(at: target)
+            guard targetOccupant?.color != color else { return }
+
+            // TODO: Make sure move doesn't end in check
+
+            moves.append(Move(source: square,
+                              target: target,
+                              capturedPiece: targetOccupant))
+        }
+
+        // TODO: Check castling
 
         return moves
     }

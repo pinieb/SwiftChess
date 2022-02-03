@@ -82,8 +82,8 @@ final class QueenTests: XCTestRun {
                     .map { $0.target }
                     .sorted()
 
-                XCTAssertEqual(actualTargets.map { [$0 / 8, $0 % 8] },
-                               expectedTargets.map { [$0 / 8, $0 % 8] },
+                XCTAssertEqual(actualTargets,
+                               expectedTargets,
                                "Queen moves do not match at (\(row), \(column))")
             }
         }
@@ -97,8 +97,8 @@ final class QueenTests: XCTestRun {
 
         let expectedMoves = [20, 27, 28, 29, 34, 35, 37, 38, 43, 44, 45, 52]
 
-        XCTAssertEqual(moves.map { [$0 / 8, $0 % 8] },
-                       expectedMoves.map { [$0 / 8, $0 % 8] },
+        XCTAssertEqual(moves,
+                       expectedMoves,
                        "Queen moves do not match")
     }
 

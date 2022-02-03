@@ -54,8 +54,8 @@ final class BishopTests: XCTestCase {
                     .map { $0.target }
                     .sorted()
 
-                XCTAssertEqual(actualTargets.map { [$0 / 8, $0 % 8] },
-                               expectedTargets.map { [$0 / 8, $0 % 8] },
+                XCTAssertEqual(actualTargets,
+                               expectedTargets,
                                "Bishop moves do not match at (\(row), \(column))")
             }
         }
@@ -69,8 +69,8 @@ final class BishopTests: XCTestCase {
 
         let expectedMoves = [27, 29, 43, 45]
 
-        XCTAssertEqual(moves.map { [$0 / 8, $0 % 8] },
-                       expectedMoves.map { [$0 / 8, $0 % 8] },
+        XCTAssertEqual(moves,
+                       expectedMoves,
                        "Bishop moves do not match")
     }
 

@@ -54,8 +54,8 @@ final class RookTests: XCTestCase {
                     .map { $0.target }
                     .sorted()
 
-                XCTAssertEqual(actualTargets.map { [$0 / 8, $0 % 8] },
-                               expectedTargets.map { [$0 / 8, $0 % 8] },
+                XCTAssertEqual(actualTargets,
+                               expectedTargets,
                                "Rook moves do not match at (\(row), \(column))")
             }
         }
@@ -69,8 +69,8 @@ final class RookTests: XCTestCase {
 
         let expectedMoves = [20, 28, 34, 35, 37, 38, 44, 52]
 
-        XCTAssertEqual(moves.map { [$0 / 8, $0 % 8] },
-                       expectedMoves.map { [$0 / 8, $0 % 8] },
+        XCTAssertEqual(moves,
+                       expectedMoves,
                        "Rook moves do not match")
     }
 
