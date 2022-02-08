@@ -5,7 +5,6 @@ public enum PieceType: Int {
     case rook
     case queen
     case king
-    case all
 
     init?(from char: Character) {
         switch char.lowercased() {

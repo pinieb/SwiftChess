@@ -1,14 +1,11 @@
 public struct BitBoard: Board {
-    var pieces: [[Int]]
-
     var states = [GameState]()
+    var pieces: PieceCollection
 
     public init(from fen: String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
-        pieces = [[Int]](repeating: [Int](repeating: 0,
-                                          count: PieceType.all.rawValue + 1),
-                         count: Color.all.rawValue + 1)
+        pieces = PieceCollection()
 
-        var state = GameState()
+        states.append(GameState())
 
         let components = fen.components(separatedBy: " ")
         let squares = components[0]
@@ -35,18 +32,14 @@ public struct BitBoard: Board {
             }
 
             let index = row * 8 + column
-
-            pieces[color][piece][index] = true
-            pieces[Color.all][piece][index] = true
-            pieces[color][PieceType.all][index] = true
-            pieces[Color.all][PieceType.all][index] = true
+            pieces[color, piece].insert(SquareSet(index: index))
 
             column += 1
         }
 
         guard components.count > 1 else { return }
 
-        state.turnToMove = components[1] == "w" ? .white : .black
+        states[0].turnToMove = components[1] == "w" ? .white : .black
 
         var castlingRights: [CastlingRights] = [.none, .none]
         for right in components[2] {
@@ -62,9 +55,7 @@ public struct BitBoard: Board {
             }
         }
 
-        state.castlingRights = castlingRights
-
-        states.append(state)
+        states[0].castlingRights = castlingRights
     }
 
     private init(board: BitBoard) {
@@ -75,37 +66,20 @@ public struct BitBoard: Board {
     public mutating func reset() {
         states = [GameState()]
 
-        let pawns = 0b11111111
-        pieces[Color.white][PieceType.pawn] = pawns << 8
-        pieces[Color.black][PieceType.pawn] = pawns << (8 * 6)
+        pieces[.white, .pawn] = .rank2
+        pieces[.white, .rook] = [.a1, .h1]
+        pieces[.white, .knight] = [.b1, .g1]
+        pieces[.white, .bishop] = [.c1, .f1]
+        pieces[.white, .queen] = [.d1]
+        pieces[.white, .king] = [.e1]
 
-        let rooks = 0b10000001
-        pieces[Color.white][PieceType.rook] = rooks
-        pieces[Color.black][PieceType.rook] = rooks << (8 * 7)
-
-        let knights = 0b01000010
-        pieces[Color.white][PieceType.knight] = knights
-        pieces[Color.black][PieceType.knight] = knights << (8 * 7)
-
-        let bishops = 0b00100100
-        pieces[Color.white][PieceType.bishop] = bishops
-        pieces[Color.black][PieceType.bishop] = bishops << (8 * 7)
-
-        let queen = 0b00010000
-        pieces[Color.white][PieceType.queen] = queen
-        pieces[Color.black][PieceType.queen] = queen << (8 * 7)
-
-        let king = 0b00001000
-        pieces[Color.white][PieceType.king] = king
-        pieces[Color.black][PieceType.king] = king << (8 * 7)
+        pieces[.black, .pawn] = .rank7
+        pieces[.black, .rook] = [.a8, .h8]
+        pieces[.black, .knight] = [.b8, .g8]
+        pieces[.black, .bishop] = [.c8, .f8]
+        pieces[.black, .queen] = [.d8]
+        pieces[.black, .king] = [.e8]
     }
-
-//    public func makeMove(from: Int,
-//                         to: Int,
-//                         for piece: Int,
-//                         of color: Int) -> BitBoard {
-//        
-//
 
     mutating func make(move: OldMove) {
         guard let moving = getPiece(at: move.source) else {
@@ -151,7 +125,7 @@ public struct BitBoard: Board {
             state.castlingRights[moving.color].remove(.kingside)
         }
 
-        state.turnToMove = state.turnToMove.next
+        state.turnToMove = state.turnToMove.opponent
 
         states.append(state)
     }
@@ -187,33 +161,18 @@ public struct BitBoard: Board {
     }
 
     mutating func set(square: Int, to piece: Piece?) {
-        for color in Color.allCases {
-            for pieceType in PieceType.allCases {
-                pieces[color][pieceType][square] = false
-            }
+        let squareSet = SquareSet(index: square)
+        pieces.clear(squares: squareSet)
+
+        if let piece = piece {
+            pieces[piece] = squareSet
         }
-
-        guard let piece = piece else { return }
-
-        pieces[piece.color][piece.type][square] = true
-        pieces[Color.all][piece.type][square] = true
-        pieces[piece.color][PieceType.all][square] = true
-        pieces[Color.all][PieceType.all][square] = true
     }
 
     public func getPiece(at square: Int) -> Piece? {
-        guard pieces[Color.all][PieceType.all][square] else { return nil }
+        guard let square = Square(rawValue: square) else { return nil }
 
-        for color in Color.allCases {
-            for pieceType in PieceType.allCases {
-                guard pieces[color][pieceType][square] else { continue }
-
-                return Piece(color: color,
-                             type: pieceType)
-            }
-        }
-
-        return nil
+        return pieces[square]
     }
 
     public func getMoves(from square: Int) -> [OldMove] {
@@ -243,8 +202,6 @@ public struct BitBoard: Board {
         case .king:
             moves = movesForKing(at: square,
                                  for: piece.color)
-        default:
-            moves = []
         }
 
         return moves
@@ -264,10 +221,10 @@ public struct BitBoard: Board {
     }
 
     private func possiblePawnMoves(for color: Color) -> [OldMove] {
-        let pawns = pieces[color][PieceType.pawn]
+        let pawns = pieces[color, .pawn]
 
         var moves = [OldMove]()
-        pawns.forEach { source in
+        pawns.rawValue.forEach { source in
             moves.append(contentsOf: movesForPawn(at: source,
                                                   of: color))
         }
@@ -296,10 +253,10 @@ public struct BitBoard: Board {
     }
 
     private func possibleKnightMoves(for color: Color) -> [OldMove] {
-        let knights = pieces[color][PieceType.knight]
+        let knights = pieces[color, .knight]
 
         var moves = [OldMove]()
-        knights.forEach { square in
+        knights.rawValue.forEach { square in
             moves.append(contentsOf: movesForKnight(at: square,
                                                     of: color))
         }
@@ -326,38 +283,11 @@ public struct BitBoard: Board {
         return moves
     }
 
-    private func possibleKnightMoves2(for color: Color) -> [OldMove] {
-        let knights = pieces[color][PieceType.knight]
-
-        var moves = [OldMove]()
-        for source in 0 ..< 64 {
-            guard knights & (1 << source) == 1 else { continue }
-
-            let targets = Moves.knightMoves[source]
-            for target in 0 ..< 64 {
-                guard targets & (1 << target) == 1 else { continue }
-
-                let targetOccupant = getPiece(at: target)
-                guard targetOccupant?.color != color else { continue }
-
-                let move = OldMove(source: source,
-                                target: target,
-                                isCastle: false,
-                                capturedPiece: targetOccupant,
-                                priorState: states.last!)
-
-                moves.append(move)
-            }
-        }
-
-        return moves
-    }
-
     private func possibleBishopMoves(for color: Color) -> [OldMove] {
-        let bishops = pieces[color][PieceType.bishop]
+        let bishops = pieces[color, .bishop]
 
         var moves = [OldMove]()
-        bishops.forEach { square in
+        bishops.rawValue.forEach { square in
             moves.append(contentsOf: movesForBishop(at: square,
                                                     of: color))
         }
@@ -369,7 +299,7 @@ public struct BitBoard: Board {
         var moves = [OldMove]()
 
         for direction in 0 ..< 4 {
-            let blockedSquares = pieces[Color.all][PieceType.all] & Moves.bishopMoves[direction][square]
+            let blockedSquares = pieces.all.rawValue & Moves.bishopMoves[direction][square]
 
             var firstHit: Int?
             if direction < 2 {
@@ -401,10 +331,10 @@ public struct BitBoard: Board {
     }
 
     private func possibleRookMoves(for color: Color) -> [OldMove] {
-        let rooks = pieces[color][PieceType.rook]
+        let rooks = pieces[color, .rook]
 
         var moves = [OldMove]()
-        rooks.forEach { square in
+        rooks.rawValue.forEach { square in
             moves.append(contentsOf: movesForRook(at: square,
                                                   of: color))
         }
@@ -415,7 +345,7 @@ public struct BitBoard: Board {
     private func movesForRook(at square: Int, of color: Color) -> [OldMove] {
         var moves = [OldMove]()
         for direction in 0 ..< 4 {
-            let blockedSquares = pieces[Color.all][PieceType.all] & Moves.rookMoves[direction][square]
+            let blockedSquares = pieces.all.rawValue & Moves.rookMoves[direction][square]
 
             var firstHit: Int?
             if direction < 2 {
@@ -447,10 +377,10 @@ public struct BitBoard: Board {
     }
 
     private func possibleQueenMoves(for color: Color) -> [OldMove] {
-        let queens = pieces[color][PieceType.queen]
+        let queens = pieces[color, .queen]
 
         var moves = [OldMove]()
-        queens.forEach { square in
+        queens.rawValue.forEach { square in
             moves.append(contentsOf: movesForBishop(at: square,
                                                     of: color))
             moves.append(contentsOf: movesForRook(at: square,
@@ -461,10 +391,10 @@ public struct BitBoard: Board {
     }
 
     private func possibleKingMoves(for color: Color) -> [OldMove] {
-        let kings = pieces[color][PieceType.king]
+        let kings = pieces[color, .king]
 
         var moves = [OldMove]()
-        kings.forEach { square in
+        kings.rawValue.forEach { square in
             moves.append(contentsOf: movesForKing(at: square,
                                                   for: color))
         }
@@ -496,8 +426,6 @@ public struct BitBoard: Board {
     }
 
     private func castles(for color: Color) -> [OldMove] {
-
-
         return []
     }
 
@@ -525,41 +453,12 @@ extension BitBoard: CustomStringConvertible {
         lines.append(divider)
 
         var row = ""
-        for i in 0 ..< 64 {
-            let index = 1 << (63 - i)
-            var piece = ""
-            if index & pieces[Color.white][PieceType.king] != 0 {
-                piece = "♔"
-            } else if index & pieces[Color.white][PieceType.queen] != 0 {
-                piece = "♕"
-            } else if index & pieces[Color.white][PieceType.rook] != 0 {
-                piece = "♖"
-            } else if index & pieces[Color.white][PieceType.bishop] != 0 {
-                piece = "♗"
-            } else if index & pieces[Color.white][PieceType.knight] != 0 {
-                piece = "♘"
-            } else if index & pieces[Color.white][PieceType.pawn] != 0 {
-                piece = "♙"
-            } else if index & pieces[Color.black][PieceType.king] != 0 {
-                piece = "♚"
-            } else if index & pieces[Color.black][PieceType.queen] != 0 {
-                piece = "♛"
-            } else if index & pieces[Color.black][PieceType.rook] != 0 {
-                piece = "♜"
-            } else if index & pieces[Color.black][PieceType.bishop] != 0 {
-                piece = "♝"
-            } else if index & pieces[Color.black][PieceType.knight] != 0 {
-                piece = "♞"
-            } else if index & pieces[Color.black][PieceType.pawn] != 0 {
-                piece = "♟︎"
-            } else {
-                piece = " "
-            }
-
+        for square in (0 ..< 64).reversed() {
+            let piece = getPiece(at: square)?.description ?? " "
             row = " \(piece) |" + row
 
-            if (i + 1) % 8 == 0 {
-                lines.append("\(8 - (i / 8)) |" + row)
+            if (square) % 8 == 0 {
+                lines.append("\(8 - (square / 8)) |" + row)
                 lines.append(divider)
                 row = ""
             }
