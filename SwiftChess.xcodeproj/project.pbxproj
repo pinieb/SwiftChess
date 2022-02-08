@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82CC580427B1FC7500019B1A /* ChessKit in Frameworks */ = {isa = PBXBuildFile; productRef = 82CC580327B1FC7500019B1A /* ChessKit */; };
 		82DB4F7A278D344200CCCD73 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB4F79278D344200CCCD73 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,18 +34,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82CC580427B1FC7500019B1A /* ChessKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		82CC580227B1FC6200019B1A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		82DB4F6D278D344200CCCD73 = {
 			isa = PBXGroup;
 			children = (
 				82DB4F80278D34D200CCCD73 /* ChessKit */,
 				82DB4F78278D344200CCCD73 /* SwiftChess */,
 				82DB4F77278D344200CCCD73 /* Products */,
+				82CC580227B1FC6200019B1A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +90,9 @@
 			dependencies = (
 			);
 			name = SwiftChess;
+			packageProductDependencies = (
+				82CC580327B1FC7500019B1A /* ChessKit */,
+			);
 			productName = SwiftChess;
 			productReference = 82DB4F76278D344200CCCD73 /* SwiftChess */;
 			productType = "com.apple.product-type.tool";
@@ -290,6 +303,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		82CC580327B1FC7500019B1A /* ChessKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChessKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 82DB4F6E278D344200CCCD73 /* Project object */;
 }

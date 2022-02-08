@@ -1,7 +1,7 @@
 import XCTest
 @testable import ChessKit
 
-final class QueenTests: XCTestRun {
+final class QueenTests: XCTestCase {
     func testMovesOnEmptyBoard() {
         for row in 0 ..< 8 {
             for column in 0 ..< 8 {

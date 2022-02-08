@@ -5,7 +5,8 @@
 //  Created by Pete Biencourt on 1/10/22.
 //
 
-import Foundation
+import ChessKit
 
-print("Hello, World!")
+let board = BitBoard()
+print(board)
 
