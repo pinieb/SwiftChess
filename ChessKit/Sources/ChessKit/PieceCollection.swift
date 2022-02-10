@@ -1,6 +1,9 @@
 public struct PieceCollection {
     private var pieces: [[SquareSet]]
 
+    private var attackedSquares: [SquareSet]
+    private var kingDangerSquares: [SquareSet]
+
     public var all: SquareSet {
         self[.white].union(self[.black])
     }
@@ -9,6 +12,10 @@ public struct PieceCollection {
         pieces = [[SquareSet]](repeating: [SquareSet](repeating: .none,
                                                       count: PieceType.allCases.count),
                                count: Color.allCases.count)
+        attackedSquares = [SquareSet](repeating: 0,
+                                      count: Color.allCases.count)
+        kingDangerSquares = [SquareSet](repeating: 0,
+                                        count: Color.allCases.count)
     }
 
     public mutating func clear(squares: SquareSet) {
@@ -51,9 +58,9 @@ public struct PieceCollection {
         }
     }
 
-    public subscript(_ index: Square) -> Piece? {
+    public subscript(_ index: SquareIndex) -> Piece? {
         get {
-            let square = SquareSet(index: index.rawValue)
+            let square = SquareSet(index: index)
 
             for color in Color.allCases {
                 for piece in PieceType.allCases {

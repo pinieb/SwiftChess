@@ -1,12 +1,12 @@
 public struct SquareSet: OptionSet {
-    public let rawValue: Int64
+    public let rawValue: Int
 
-    public init(rawValue: Int64) {
+    public init(rawValue: Int) {
         self.rawValue = rawValue
     }
 
-    public init(index: Int) {
-        self.rawValue = 1 << index
+    public init(index: SquareIndex) {
+        self.rawValue = 1 << index.rawValue
     }
 
     public static let a1 = SquareSet(rawValue: 1 << 0)
@@ -88,4 +88,39 @@ public struct SquareSet: OptionSet {
     public static let rank6 = SquareSet([.a6, .b6, .c6, .d6, .e6, .f6, .g6, .h6])
     public static let rank7 = SquareSet([.a7, .b7, .c7, .d7, .e7, .f7, .g7, .h7])
     public static let rank8 = SquareSet([.a8, .b8, .c8, .d8, .e8, .f8, .g8, .h8])
+
+    @discardableResult
+    public mutating func insert(value: RawValue) -> (inserted: Bool, memberAfterInsert: SquareSet) {
+        let newMember = SquareSet(rawValue: value)
+        return insert(newMember)
+    }
+
+    @discardableResult
+    public mutating func insert(square: SquareIndex) -> (inserted: Bool, memberAfterInsert: SquareSet) {
+        let newMember = SquareSet(index: square)
+        return insert(newMember)
+    }
+
+    public func shifted(by places: Int) -> SquareSet {
+        precondition(-64 < places && places < 64,
+                     "Cannot shift more than 63 times in either direction")
+
+        if places < 0 {
+            return SquareSet(rawValue: self.rawValue >> abs(places))
+        }
+
+        return SquareSet(rawValue: self.rawValue << places)
+    }
+
+    public func forEach(_ body: (SquareSet) -> ()) {
+        rawValue.forEach {
+            body(SquareSet(rawValue: 1 << $0))
+        }
+    }
+}
+
+extension SquareSet: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int) {
+        rawValue = value
+    }
 }

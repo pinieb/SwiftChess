@@ -2,6 +2,12 @@ public struct BitBoard: Board {
     var states = [GameState]()
     var pieces: PieceCollection
 
+    var attackedSquares = [SquareSet](repeating: 0, count: 2)
+    var kingDangerSquares = [SquareSet](repeating: 0, count: 2)
+
+    var turnToMove: Color { states.last!.turnToMove }
+    var enPassant: SquareSet { states.last!.enPassant }
+
     public init(from fen: String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
         pieces = PieceCollection()
 
@@ -32,7 +38,7 @@ public struct BitBoard: Board {
             }
 
             let index = row * 8 + column
-            pieces[color, piece].insert(SquareSet(index: index))
+            pieces[color, piece].insert(value: index)
 
             column += 1
         }
@@ -86,26 +92,26 @@ public struct BitBoard: Board {
             return
         }
 
-        set(square: move.source, to: nil)
-        set(square: move.target, to: moving)
-
+//        set(square: move.source, to: nil)
+//        set(square: move.target, to: moving)
+//
         var state = states.last ?? GameState()
-
-        if move.isCastle {
-            if move.target - move.source > 0 {
-                set(square: moving.color == .white ? 7 : 63,
-                    to: nil)
-                set(square: move.target - 1,
-                    to: Piece(color: moving.color,
-                              type: .rook))
-            } else {
-                set(square: moving.color == .white ? 0 : 56,
-                    to: nil)
-                set(square: move.target + 1,
-                    to: Piece(color: moving.color,
-                              type: .rook))
-            }
-        }
+//
+//        if move.isCastle {
+//            if move.target - move.source > 0 {
+//                set(square: moving.color == .white ? 7 : 63,
+//                    to: nil)
+//                set(square: move.target - 1,
+//                    to: Piece(color: moving.color,
+//                              type: .rook))
+//            } else {
+//                set(square: moving.color == .white ? 0 : 56,
+//                    to: nil)
+//                set(square: move.target + 1,
+//                    to: Piece(color: moving.color,
+//                              type: .rook))
+//            }
+//        }
 
         if moving.type == .pawn || move.capturedPiece != nil {
             state.fiftyMoveCounter = 0
@@ -138,29 +144,33 @@ public struct BitBoard: Board {
             return
         }
 
-        set(square: move.target, to: move.capturedPiece)
-        set(square: move.source, to: moving)
-
-        if move.isCastle {
-            if move.target - move.source > 0 {
-                set(square: moving.color == .white ? 7 : 63,
-                    to: Piece(color: moving.color,
-                              type: .rook))
-                set(square: move.target - 1,
-                    to: nil)
-            } else {
-                set(square: moving.color == .white ? 0 : 56,
-                    to: Piece(color: moving.color,
-                              type: .rook))
-                set(square: move.target + 1,
-                    to: nil)
-            }
-        }
-
-        states.removeLast()
+//        set(square: move.target, to: move.capturedPiece)
+//        set(square: move.source, to: moving)
+//
+//        if move.isCastle {
+//            if move.target - move.source > 0 {
+//                set(square: moving.color == .white ? 7 : 63,
+//                    to: Piece(color: moving.color,
+//                              type: .rook))
+//                set(square: move.target - 1,
+//                    to: nil)
+//            } else {
+//                set(square: moving.color == .white ? 0 : 56,
+//                    to: Piece(color: moving.color,
+//                              type: .rook))
+//                set(square: move.target + 1,
+//                    to: nil)
+//            }
+//        }
+//
+//        states.removeLast()
     }
 
-    mutating func set(square: Int, to piece: Piece?) {
+    func isInCheck(color: Color) -> Bool {
+        attackedSquares[color].intersection(pieces[color, .king]) != .none
+    }
+
+    mutating func set(square: SquareIndex, to piece: Piece?) {
         let squareSet = SquareSet(index: square)
         pieces.clear(squares: squareSet)
 
@@ -170,7 +180,7 @@ public struct BitBoard: Board {
     }
 
     public func getPiece(at square: Int) -> Piece? {
-        guard let square = Square(rawValue: square) else { return nil }
+        guard let square = SquareIndex(rawValue: square) else { return nil }
 
         return pieces[square]
     }

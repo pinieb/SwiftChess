@@ -31,9 +31,6 @@ extension Piece: CustomStringConvertible {
             return "♛"
         case (.black, .king):
             return "♚"
-
-        default:
-            return "?"
         }
     }
 }

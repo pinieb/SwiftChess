@@ -1,8 +1,9 @@
 public enum Move {
-    case quiet(from: Square, to: Square)
-    case capture(from: Square, to: Square)
+    case quiet(from: SquareSet, to: SquareSet)
+    case capture(from: SquareSet, to: SquareSet)
+    case enPassant(from: SquareSet, to: SquareSet)
     case castle(_ side: Castle)
-    case promotion(from: Square, piece: PieceType)
+    case promotion(from: SquareSet, piece: PieceType)
 }
 
 public struct OldMove {
