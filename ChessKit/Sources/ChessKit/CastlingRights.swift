@@ -1,6 +1,13 @@
 public enum Castle {
     case kingside
     case queenside
+
+    public var notation: String {
+        switch self {
+        case .kingside: return "O-O"
+        case .queenside: return "O-O-O"
+        }
+    }
 }
 
 public struct CastlingRights: OptionSet {

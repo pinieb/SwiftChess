@@ -124,3 +124,22 @@ extension SquareSet: ExpressibleByIntegerLiteral {
         rawValue = value
     }
 }
+
+extension SquareSet: CustomStringConvertible {
+    public var description: String {
+        var squares = [SquareIndex]()
+        self.rawValue.forEach {
+            squares.append(SquareIndex(rawValue: $0)!)
+        }
+
+        if squares.count == 0 {
+            return ""
+        }
+
+        if squares.count == 1 {
+            return "\(squares[0])"
+        }
+
+        return "\(squares)"
+    }
+}

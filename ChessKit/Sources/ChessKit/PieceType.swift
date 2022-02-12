@@ -24,6 +24,24 @@ public enum PieceType: Int {
             return nil
         }
     }
+
+    var notation: String {
+        switch self {
+        case .pawn:
+            return ""
+        case .knight:
+            return "N"
+        case .bishop:
+            return "B"
+        case .rook:
+            return "R"
+        case .queen:
+            return "Q"
+        case .king:
+            return "K"
+        }
+    }
 }
 
 extension PieceType: CaseIterable {}
+

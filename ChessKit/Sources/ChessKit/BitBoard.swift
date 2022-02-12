@@ -38,7 +38,7 @@ public struct BitBoard: Board {
             }
 
             let index = row * 8 + column
-            pieces[color, piece].insert(value: index)
+            pieces[color, piece].insert(value: 1 << index)
 
             column += 1
         }
@@ -85,6 +85,114 @@ public struct BitBoard: Board {
         pieces[.black, .bishop] = [.c8, .f8]
         pieces[.black, .queen] = [.d8]
         pieces[.black, .king] = [.e8]
+    }
+
+    public mutating func make(move: Move) {
+        var nextState: GameState
+
+        switch move {
+        case let .castle(side):
+            nextState = playCastle(side: side)
+        case let .promotion(source, piece):
+            nextState = playPromotion(source: source,
+                                      piece: piece)
+        case let .enPassant(source, target):
+            nextState = playEnPassant(source: source,
+                                      target: target)
+        case let .quiet(source, target),
+            let .capture(source, target):
+            nextState = playMove(source: source, target: target)
+        }
+
+        states.append(nextState)
+    }
+
+    private mutating func playCastle(side: Castle) -> GameState {
+        let kingStart: SquareIndex = turnToMove == .white ? .e1 : .e8
+        let kingEnd: SquareIndex
+        let rookStart: SquareIndex
+        let rookEnd: SquareIndex
+
+        if side == .kingside {
+            if turnToMove == .white {
+                kingEnd = .g1
+                rookStart = .h1
+                rookEnd = .f1
+            } else {
+                kingEnd = .g8
+                rookStart = .h8
+                rookEnd = .f8
+            }
+        } else {
+            if turnToMove == .white {
+                kingEnd = .c1
+                rookStart = .a1
+                rookEnd = .d1
+            } else {
+                kingEnd = .c8
+                rookStart = .a8
+                rookEnd = .d8
+            }
+        }
+
+        set(square: kingStart, to: nil)
+        set(square: rookStart, to: nil)
+        set(square: kingEnd, to: Piece(color: turnToMove,
+                                       type: .king))
+        set(square: rookEnd, to: Piece(color: turnToMove,
+                                       type: .rook))
+
+        var nextState = states.last!.next
+        nextState.castlingRights[turnToMove] = .none
+
+        return nextState
+    }
+
+    private mutating func playPromotion(source: SquareSet, piece: PieceType) -> GameState {
+        let pawnSquare = SquareIndex(rawValue: source.rawValue.first!)!
+
+        let direction = turnToMove == .white ? 8 : -8
+        let promotionSquare = SquareIndex(rawValue: pawnSquare.rawValue + direction)!
+
+        set(square: pawnSquare, to: nil)
+        set(square: promotionSquare, to: Piece(color: turnToMove,
+                                               type: piece))
+
+        return states.last!.next
+    }
+
+    private mutating func playEnPassant(source: SquareSet, target: SquareSet) -> GameState {
+        let pawnSquare = SquareIndex(rawValue: source.rawValue.first!)!
+
+        let targetSquare = SquareIndex(rawValue: states.last!.enPassant.rawValue.first!)!
+
+        set(square: pawnSquare, to: nil)
+        set(square: targetSquare, to: Piece(color: turnToMove,
+                                            type: .pawn))
+
+        var nextState = states.last!.next
+        nextState.capturedPiece = Piece(color: nextState.turnToMove,
+                                        type: .pawn)
+
+        return nextState
+    }
+
+    private mutating func playMove(source: SquareSet, target: SquareSet) -> GameState {
+        let piece = getPiece(at: source)!
+
+        let sourceSquare = SquareIndex(rawValue: source.rawValue.first!)!
+        let targetSquare = SquareIndex(rawValue: target.rawValue.first!)!
+
+        var nextState = states.last!.next
+
+        if let capturedPiece = getPiece(at: targetSquare.rawValue) {
+            nextState.capturedPiece = capturedPiece
+        }
+
+        set(square: sourceSquare, to: nil)
+        set(square: targetSquare, to: piece)
+
+        return nextState
     }
 
     mutating func make(move: OldMove) {
@@ -175,8 +283,13 @@ public struct BitBoard: Board {
         pieces.clear(squares: squareSet)
 
         if let piece = piece {
-            pieces[piece] = squareSet
+            pieces[piece].insert(squareSet)
         }
+    }
+
+    public func getPiece(at square: SquareSet) -> Piece? {
+        guard let index = square.rawValue.first else { return nil }
+        return getPiece(at: index)
     }
 
     public func getPiece(at square: Int) -> Piece? {
@@ -468,7 +581,7 @@ extension BitBoard: CustomStringConvertible {
             row = " \(piece) |" + row
 
             if (square) % 8 == 0 {
-                lines.append("\(8 - (square / 8)) |" + row)
+                lines.append("\(square / 8 + 1) |" + row)
                 lines.append(divider)
                 row = ""
             }

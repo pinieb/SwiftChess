@@ -1,4 +1,4 @@
-class MoveGenerator {
+public class MoveGenerator {
     private static let knightMoves: [SquareSet] = [
         132096, 329728, 659712, 1319424, 2638848, 5277696, 10489856, 4202496,
         33816580, 84410376, 168886289, 337772578, 675545156, 1351090312, 2685403152, 1075839008,
@@ -18,21 +18,35 @@ class MoveGenerator {
         [254, 252, 248, 240, 224, 192, 128, 0, 65024, 64512, 63488, 61440, 57344, 49152, 32768, 0, 16646144, 16515072, 16252928, 15728640, 14680064, 12582912, 8388608, 0, 4261412864, 4227858432, 4160749568, 4026531840, 3758096384, 3221225472, 2147483648, 0, 1090921693184, 1082331758592, 1065151889408, 1030792151040, 962072674304, 824633720832, 549755813888, 0, 279275953455104, 277076930199552, 272678883688448, 263882790666240, 246290604621824, 211106232532992, 140737488355328, 0, 71494644084506624, 70931694131085312, 69805794224242688, 67553994410557440, 63050394783186944, 54043195528445952, 36028797018963968, 0, -144115188075855872, -288230376151711744, -576460752303423488, -1152921504606846976, -2305843009213693952, -4611686018427387904, -9223372036854775808, 0], [72340172838076672, 144680345676153344, 289360691352306688, 578721382704613376, 1157442765409226752, 2314885530818453504, 4629771061636907008, -9187201950435737600, 72340172838076416, 144680345676152832, 289360691352305664, 578721382704611328, 1157442765409222656, 2314885530818445312, 4629771061636890624, -9187201950435770368, 72340172838010880, 144680345676021760, 289360691352043520, 578721382704087040, 1157442765408174080, 2314885530816348160, 4629771061632696320, -9187201950444158976, 72340172821233664, 144680345642467328, 289360691284934656, 578721382569869312, 1157442765139738624, 2314885530279477248, 4629771060558954496, -9187201952591642624, 72340168526266368, 144680337052532736, 289360674105065472, 578721348210130944, 1157442696420261888, 2314885392840523776, 4629770785681047552, -9187202502347456512, 72339069014638592, 144678138029277184, 289356276058554368, 578712552117108736, 1157425104234217472, 2314850208468434944, 4629700416936869888, -9187343239835811840, 72057594037927936, 144115188075855872, 288230376151711744, 576460752303423488, 1152921504606846976, 2305843009213693952, 4611686018427387904, -9223372036854775808, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 3, 7, 15, 31, 63, 127, 0, 256, 768, 1792, 3840, 7936, 16128, 32512, 0, 65536, 196608, 458752, 983040, 2031616, 4128768, 8323072, 0, 16777216, 50331648, 117440512, 251658240, 520093696, 1056964608, 2130706432, 0, 4294967296, 12884901888, 30064771072, 64424509440, 133143986176, 270582939648, 545460846592, 0, 1099511627776, 3298534883328, 7696581394432, 16492674416640, 34084860461056, 69269232549888, 139637976727552, 0, 281474976710656, 844424930131968, 1970324836974592, 4222124650659840, 8725724278030336, 17732923532771328, 35747322042253312, 0, 72057594037927936, 216172782113783808, 504403158265495552, 1080863910568919040, 2233785415175766016, 4539628424389459968, 9151314442816847872], [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 8, 16, 32, 64, 128, 257, 514, 1028, 2056, 4112, 8224, 16448, 32896, 65793, 131586, 263172, 526344, 1052688, 2105376, 4210752, 8421504, 16843009, 33686018, 67372036, 134744072, 269488144, 538976288, 1077952576, 2155905152, 4311810305, 8623620610, 17247241220, 34494482440, 68988964880, 137977929760, 275955859520, 551911719040, 1103823438081, 2207646876162, 4415293752324, 8830587504648, 17661175009296, 35322350018592, 70644700037184, 141289400074368, 282578800148737, 565157600297474, 1130315200594948, 2260630401189896, 4521260802379792, 9042521604759584, 18085043209519168, 36170086419038336]
     ]
 
-    static func generateMoves(from position: BitBoard) -> [Move] {
+    static let kingMoves: [SquareSet] = [
+        770, 1797, 3594, 7188, 14376, 28752, 57504, 49216,
+        197123, 460039, 920078, 1840156, 3680312, 7360624, 14721248, 12599488,
+        50463488, 117769984, 235539968, 471079936, 942159872, 1884319744, 3768639488, 3225468928,
+        12918652928, 30149115904, 60298231808, 120596463616, 241192927232, 482385854464, 964771708928, 825720045568,
+        3307175149568, 7718173671424, 15436347342848, 30872694685696, 61745389371392, 123490778742784, 246981557485568, 211384331665408,
+        846636838289408, 1975852459884544, 3951704919769088, 7903409839538176, 15806819679076352, 31613639358152704, 63227278716305408, 54114388906344448,
+        216739030602088448, 505818229730443264, 1011636459460886528, 2023272918921773056, 4046545837843546112, 8093091675687092224, -2260560722335367168, -4593460513685372928,
+        144959613005987840, 362258295026614272, 724516590053228544, 1449033180106457088, 2898066360212914176, 5796132720425828352, -6854478632857894912, 4665729213955833856
+    ]
+
+    public static func generateMoves(from position: BitBoard) -> [Move] {
         var moves = [Move]()
 
-        moves.append(contentsOf: pawnMoves(color: position.turnToMove,
-                                           pieces: position.pieces,
-                                           enPassant: position.enPassant))
-
-        moves.append(contentsOf: knightMoves(color: position.turnToMove,
-                                             pieces: position.pieces))
+//        moves.append(contentsOf: pawnMoves(color: position.turnToMove,
+//                                           pieces: position.pieces,
+//                                           enPassant: position.enPassant))
+//
+//        moves.append(contentsOf: knightMoves(color: position.turnToMove,
+//                                             pieces: position.pieces))
 
         moves.append(contentsOf: diagonalSliderMoves(color: position.turnToMove,
                                                      pieces: position.pieces))
 
-        moves.append(contentsOf: orthogonalSliderMoves(color: position.turnToMove,
-                                                       pieces: position.pieces))
+//        moves.append(contentsOf: orthogonalSliderMoves(color: position.turnToMove,
+//                                                       pieces: position.pieces))
+//
+//        moves.append(contentsOf: kingMoves(color: position.turnToMove,
+//                                           pieces: position.pieces))
 
         if !position.attackedSquares[position.turnToMove].contains(position.pieces[position.turnToMove, .king]) {
             moves.append(contentsOf: castles(color: position.turnToMove,
@@ -175,9 +189,9 @@ class MoveGenerator {
 
                 var firstHit: Int?
                 if direction < 2 {
-                    firstHit = blockedSquares.rawValue.first
-                } else {
                     firstHit = blockedSquares.rawValue.last
+                } else {
+                    firstHit = blockedSquares.rawValue.first
                 }
 
                 var availableSquares = bishopMoves[direction][sourceIndex.rawValue]
@@ -222,9 +236,9 @@ class MoveGenerator {
                     firstHit = blockedSquares.rawValue.last
                 }
 
-                var availableSquares = bishopMoves[direction][sourceIndex.rawValue]
+                var availableSquares = rookMoves[direction][sourceIndex.rawValue]
                 if let firstHit = firstHit {
-                    availableSquares.remove(bishopMoves[direction][firstHit])
+                    availableSquares.remove(rookMoves[direction][firstHit])
                     availableSquares.remove(pieces[color])
                 }
 
@@ -244,6 +258,31 @@ class MoveGenerator {
         return moves
     }
 
+    public static func kingMoves(color: Color,
+                                 pieces: PieceCollection) -> [Move] {
+        var moves = [Move]()
+
+        let source = pieces[color, .king]
+        guard let index = source.rawValue.first else {
+            return []
+        }
+
+        var targets = kingMoves[index]
+        targets.remove(pieces[color])
+
+        targets.forEach { target in
+            if pieces[color.opponent].contains(target) {
+                moves.append(.capture(from: source,
+                                      to: target))
+            } else {
+                moves.append(.quiet(from: source,
+                                    to: target))
+            }
+        }
+
+        return moves
+    }
+
     public static func castles(color: Color,
                                position: BitBoard) -> [Move] {
         var moves = [Move]()
@@ -254,13 +293,15 @@ class MoveGenerator {
 
         let dangerSquares = position.kingDangerSquares[color]
 
-        if (position.states.last?.castlingRights.contains(.kingside) ?? false),
+        let canKingsideCastle = position.states.last?.castlingRights[position.turnToMove.rawValue].contains(.kingside) ?? false
+        if canKingsideCastle,
            position.pieces.all.intersection(kingsideSquares) == .none,
            dangerSquares.intersection([kingSquare, kingsideSquares]) == .none {
             moves.append(.castle(.kingside))
         }
 
-        if position.states.last?.castlingRights.contains(.queenside) ?? false,
+        let canQueensideCastle = position.states.last?.castlingRights[position.turnToMove.rawValue].contains(.queenside) ?? false
+        if canQueensideCastle,
            position.pieces.all.intersection(queensideSquares) == .none,
            dangerSquares.intersection([kingSquare, queensideSquares]) == .none {
             moves.append(.castle(.queenside))
