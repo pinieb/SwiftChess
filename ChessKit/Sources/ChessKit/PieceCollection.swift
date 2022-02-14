@@ -8,12 +8,6 @@ public struct PieceCollection {
         self[.white].union(self[.black])
     }
 
-    var shouldAutomaticallyUpdateAttackSets = false {
-        didSet {
-            updateAttackedSquares()
-        }
-    }
-
     public init() {
         pieces = [[SquareSet]](repeating: [SquareSet](repeating: .none,
                                                       count: PieceType.allCases.count),
@@ -33,8 +27,6 @@ public struct PieceCollection {
     }
 
     private mutating func updateAttackedSquares() {
-        guard shouldAutomaticallyUpdateAttackSets else { return }
-        
         for color in Color.allCases {
             attackedSquares[color] = 0
 

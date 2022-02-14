@@ -59,8 +59,6 @@ public struct BitBoard: Board {
         }
 
         states[0].castlingRights = castlingRights
-
-        pieces.shouldAutomaticallyUpdateAttackSets = true
     }
 
     private init(board: BitBoard) {
