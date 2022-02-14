@@ -1,4 +1,5 @@
 import Foundation
+import AppKit
 
 extension Int {
     subscript(_ index: Int) -> Bool {
@@ -29,14 +30,14 @@ extension Int {
     }
 
     var first: Int? {
-        var current = self
+        var current = 1
         var index = 0
-        while current != 0 {
-            guard !current[0] else {
+        while index < 64 {
+            if current & self != 0 {
                 return index
             }
 
-            current >>= 1
+            current <<= 1
             index += 1
         }
 
@@ -44,15 +45,17 @@ extension Int {
     }
 
     var last: Int? {
-        guard self != 0 else { return nil }
+        var current = 1 << 63
+        var index = 63
+        while index >= 0 {
+            if current & self != 0 {
+                return index
+            }
 
-        var current = self
-        var index = 0
-        while current != 0 {
             current >>= 1
-            index += 1
+            index -= 1
         }
 
-        return index - 1
+        return nil
     }
 }

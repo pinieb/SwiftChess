@@ -41,6 +41,10 @@ public enum PieceType: Int {
             return "K"
         }
     }
+
+    static var promotions: [PieceType] {
+        [.knight, .bishop, .rook, .queen]
+    }
 }
 
 extension PieceType: CaseIterable {}

@@ -1,11 +1,17 @@
 public struct PieceCollection {
     private var pieces: [[SquareSet]]
 
-    private var attackedSquares: [SquareSet]
-    private var kingDangerSquares: [SquareSet]
+    private(set) var attackedSquares: [SquareSet]
+    private(set) var kingDangerSquares: [SquareSet]
 
     public var all: SquareSet {
         self[.white].union(self[.black])
+    }
+
+    var shouldAutomaticallyUpdateAttackSets = false {
+        didSet {
+            updateAttackedSquares()
+        }
     }
 
     public init() {
@@ -24,6 +30,173 @@ public struct PieceCollection {
                 pieces[color][piece].remove(squares)
             }
         }
+    }
+
+    private mutating func updateAttackedSquares() {
+        guard shouldAutomaticallyUpdateAttackSets else { return }
+        
+        for color in Color.allCases {
+            attackedSquares[color] = 0
+
+            attackedSquares[color].formUnion(pawnAttackSet(color: color))
+            attackedSquares[color].formUnion(knightAttackSet(color: color))
+            attackedSquares[color].formUnion(kingAttackSet(color: color))
+
+            kingDangerSquares[color.opponent] = attackedSquares[color]
+
+            attackedSquares[color].formUnion(diagonalAttackSet(color: color,
+                                                               piece: .bishop))
+            attackedSquares[color].formUnion(orthogonalAttackSet(color: color,
+                                                                 piece: .rook))
+
+            kingDangerSquares[color.opponent]
+                .formUnion(diagonalAttackSet(color: color,
+                                             piece: .bishop,
+                                             ignoredBlockers: self[color.opponent, .king]))
+            kingDangerSquares[color.opponent]
+                .formUnion(orthogonalAttackSet(color: color,
+                                               piece: .rook,
+                                               ignoredBlockers: self[color.opponent, .king]))
+
+            attackedSquares[color].formUnion(diagonalAttackSet(color: color,
+                                                               piece: .queen))
+            attackedSquares[color].formUnion(orthogonalAttackSet(color: color,
+                                                                 piece: .queen))
+
+            kingDangerSquares[color.opponent]
+                .formUnion(diagonalAttackSet(color: color,
+                                             piece: .queen,
+                                             ignoredBlockers: self[color.opponent, .king]))
+            kingDangerSquares[color.opponent]
+                .formUnion(orthogonalAttackSet(color: color,
+                                               piece: .queen,
+                                               ignoredBlockers: self[color.opponent, .king]))
+        }
+    }
+
+    private func pawnAttackSet(color: Color,
+                               squareMask: SquareSet = .all) -> SquareSet {
+        let leftShift = color == .white ? 7 : -9
+        let rightShift = color == .white ? 9 : -7
+
+        var attackSet = SquareSet.none
+
+        // left
+        var pawns = self[color, .pawn].intersection(squareMask)
+        pawns.remove(.aFile)
+
+        attackSet.formUnion(pawns.shifted(by: leftShift))
+
+        // right
+        pawns = self[color, .pawn].intersection(squareMask)
+        pawns.remove(.hFile)
+
+        attackSet.formUnion(pawns.shifted(by: rightShift))
+
+        return attackSet
+    }
+
+    private func knightAttackSet(color: Color,
+                                 squareMask: SquareSet = .all) -> SquareSet {
+        var attackSet = SquareSet.none
+
+        self[color, .knight]
+            .intersection(squareMask)
+            .rawValue
+            .forEach {
+                attackSet.formUnion(MoveSets.knight[$0])
+            }
+
+        return attackSet
+    }
+
+    private func kingAttackSet(color: Color) -> SquareSet {
+        var attackSet = SquareSet.none
+
+        self[color, .king]
+            .rawValue
+            .forEach {
+                attackSet.formUnion(MoveSets.king[$0])
+            }
+
+        return attackSet
+    }
+
+    private func diagonalAttackSet(color: Color,
+                                   piece: PieceType,
+                                   squareMask: SquareSet = .all,
+                                   ignoredBlockers: SquareSet = .none) -> SquareSet {
+        guard piece == .bishop || piece == .queen else { return .none }
+
+        var attackSet = SquareSet.none
+
+        self[color, piece]
+            .intersection(squareMask)
+            .rawValue
+            .forEach {
+                for direction in 0 ..< 4 {
+                    var blockedSquares = self.all
+                        .intersection(MoveSets.bishop[direction][$0])
+                    blockedSquares.remove(ignoredBlockers)
+
+
+                    var firstHit: Int?
+                    if direction < 2 {
+                        firstHit = blockedSquares.rawValue.last
+                    } else {
+                        firstHit = blockedSquares.rawValue.first
+                    }
+
+                    var availableSquares = MoveSets.bishop[direction][$0]
+                    if let firstHit = firstHit {
+                        availableSquares.remove(MoveSets.bishop[direction][firstHit])
+                    }
+
+                    attackSet.formUnion(availableSquares)
+                }
+            }
+
+        return attackSet
+    }
+
+    private func orthogonalAttackSet(color: Color,
+                                     piece: PieceType,
+                                     squareMask: SquareSet = .all,
+                                     ignoredBlockers: SquareSet = .none) -> SquareSet {
+        guard piece == .rook || piece == .queen else { return .none }
+
+        var attackSet = SquareSet.none
+
+        self[color, piece]
+            .intersection(squareMask)
+            .rawValue
+            .forEach {
+                for direction in 0 ..< 4 {
+                    var blockedSquares = self.all
+                        .intersection(MoveSets.rook[direction][$0])
+                    blockedSquares.remove(ignoredBlockers)
+
+                    var firstHit: Int?
+                    if direction < 2 {
+                        firstHit = blockedSquares.rawValue.last
+                    } else {
+                        firstHit = blockedSquares.rawValue.first
+                    }
+
+                    var availableSquares = MoveSets.rook[direction][$0]
+                    if let firstHit = firstHit {
+                        availableSquares.remove(MoveSets.rook[direction][firstHit])
+                    }
+
+                    attackSet.formUnion(availableSquares)
+                }
+            }
+
+        return attackSet
+    }
+
+    public func isInCheck(color: Color) -> Bool {
+        kingDangerSquares[color].intersection(self[color, .king]) != .none
     }
 
     public subscript(_ color: Color) -> SquareSet {
@@ -46,6 +219,7 @@ public struct PieceCollection {
         }
         set {
             pieces[color][piece] = newValue
+            updateAttackedSquares()
         }
     }
 
@@ -55,6 +229,7 @@ public struct PieceCollection {
         }
         set {
             pieces[piece.color][piece.type] = newValue
+            updateAttackedSquares()
         }
     }
 
