@@ -32,12 +32,36 @@ extension Move: CustomStringConvertible {
     }
 }
 
-public struct OldMove {
-    public let source: Int
-    public let target: Int
+public extension Move {
+    func longAlgebraicNotation(color: Color) -> String {
+        var source: SquareSet
+        var target: SquareSet
 
-    public let isCastle: Bool
+        var promotion = ""
 
-    public let capturedPiece: Piece?
-    public let priorState: GameState
+        switch self {
+        case let .castle(side):
+            if color == .white {
+                source = .e1
+                target = side == .kingside ? .g1 : .c1
+            } else {
+                source = .e8
+                target = side == .kingside ? .g8 : .c8
+            }
+
+        case let .promotion(s, piece):
+            source = s
+            target = s.shifted(by: color == .white ? 8 : -8)
+            promotion = "\(piece.notation.lowercased())"
+
+        case let .quiet(s, t),
+            let .capture(s, t),
+            let .enPassant(s, t):
+            source = s
+            target = t
+
+        }
+
+        return "\(source)\(target)\(promotion)"
+    }
 }

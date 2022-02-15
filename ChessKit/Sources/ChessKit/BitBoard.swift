@@ -2,8 +2,8 @@ public struct BitBoard: Board {
     var states = [GameState]()
     var pieces: PieceCollection
 
-    var turnToMove: Color { states.last!.turnToMove }
-    var enPassant: SquareSet { states.last!.enPassant }
+    public var turnToMove: Color { states.last!.turnToMove }
+    public var enPassant: SquareSet { states.last!.enPassant }
 
     public init(from fen: String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
         pieces = PieceCollection()

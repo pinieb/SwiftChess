@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82863F9C27BB291800AB7D60 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82863F9B27BB291800AB7D60 /* Engine.swift */; };
 		82CC580427B1FC7500019B1A /* ChessKit in Frameworks */ = {isa = PBXBuildFile; productRef = 82CC580327B1FC7500019B1A /* ChessKit */; };
 		82DB4F7A278D344200CCCD73 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB4F79278D344200CCCD73 /* main.swift */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		82863F9B27BB291800AB7D60 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		82DB4F76278D344200CCCD73 /* SwiftChess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SwiftChess; sourceTree = BUILT_PRODUCTS_DIR; };
 		82DB4F79278D344200CCCD73 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		82DB4F80278D34D200CCCD73 /* ChessKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChessKit; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				82DB4F79278D344200CCCD73 /* main.swift */,
+				82863F9B27BB291800AB7D60 /* Engine.swift */,
 			);
 			path = SwiftChess;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82DB4F7A278D344200CCCD73 /* main.swift in Sources */,
+				82863F9C27BB291800AB7D60 /* Engine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
