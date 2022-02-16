@@ -25,23 +25,55 @@ class Engine {
             let command = components[0]
 
             switch command {
-            case "uci":
-                sendMessage("id name SwiftChess")
-                sendMessage("id author Pete Biencourt")
-                sendMessage("uciok")
-
-            case "isready":
-                sendMessage("readyok")
+            case "uci": identifyEngine()
+            case "debug": continue
+            case "isready": sendMessage("readyok")
+            case "setoption": continue
+            case "register": continue
+            case "ucinewgame": startNewGame()
+            case "position": updatePosition(components.map { String($0) })
 
             case "go":
                 let moves = MoveGenerator.generateMoves(from: position)
                 let move = moves[Int.random(in: 0 ..< moves.count)]
                 sendMessage("bestmove \(move.longAlgebraicNotation(color: position.turnToMove))")
 
+            case "stop": continue
+            case "ponderhit": continue
+            case "quit": continue
+
             default: continue
             }
         }
 
         exit(0)
+    }
+
+    private func identifyEngine() {
+        sendMessage("id name SwiftChess")
+        sendMessage("id author Pete Biencourt")
+        sendMessage("uciok")
+    }
+
+    private func startNewGame() {
+        position = BitBoard()
+    }
+
+    private func updatePosition(_ components: [String]) {
+        var last = 1
+        if components[1] == "startPos" {
+            startNewGame()
+        } else if components[1] == "fen" {
+            let fen = components[2...7].joined(separator: " ")
+            last = 7
+            position = BitBoard(from: fen)
+        }
+
+        last += 1
+        if last < components.count, components[last] == "moves" {
+            components[(last + 1)...].forEach {
+                position.playLongAlgebraicMove($0)
+            }
+        }
     }
 }

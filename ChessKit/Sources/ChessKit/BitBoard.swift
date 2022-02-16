@@ -1,14 +1,16 @@
 public struct BitBoard: Board {
-    var states = [GameState]()
+    var states = [GameState()]
     var pieces: PieceCollection
 
     public var turnToMove: Color { states.last!.turnToMove }
     public var enPassant: SquareSet { states.last!.enPassant }
 
-    public init(from fen: String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
-        pieces = PieceCollection()
+    public init() {
+        pieces = .startingPosition
+    }
 
-        states.append(GameState())
+    public init(from fen: String) {// = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
+        pieces = PieceCollection()
 
         let components = fen.components(separatedBy: " ")
         let squares = components[0]
@@ -67,21 +69,7 @@ public struct BitBoard: Board {
     }
 
     public mutating func reset() {
-        states = [GameState()]
-
-        pieces[.white, .pawn] = .rank2
-        pieces[.white, .rook] = [.a1, .h1]
-        pieces[.white, .knight] = [.b1, .g1]
-        pieces[.white, .bishop] = [.c1, .f1]
-        pieces[.white, .queen] = [.d1]
-        pieces[.white, .king] = [.e1]
-
-        pieces[.black, .pawn] = .rank7
-        pieces[.black, .rook] = [.a8, .h8]
-        pieces[.black, .knight] = [.b8, .g8]
-        pieces[.black, .bishop] = [.c8, .f8]
-        pieces[.black, .queen] = [.d8]
-        pieces[.black, .king] = [.e8]
+        pieces = .startingPosition
     }
 
     public mutating func make(move: Move) {
@@ -372,5 +360,55 @@ extension BitBoard: CustomStringConvertible {
         lines.append("    a   b   c   d   e   f   g   h")
 
         return lines.joined(separator: "\n")
+    }
+}
+
+public extension BitBoard {
+    mutating func playLongAlgebraicMove(_ notation: String) {
+        guard notation.count >= 4 else { return }
+        let chars = Array(notation)
+
+        var move: Move
+
+        let col1 = Int(chars[0].asciiValue! - Character("a").asciiValue!)
+        let row1 = Int(String(chars[1]))!
+        let index1 = (row1 - 1) * 8 + col1
+        let source = SquareSet(rawValue: 1 << index1)
+
+        let col2 = Int(chars[2].asciiValue! - Character("a").asciiValue!)
+        let row2 = Int(String(chars[3]))!
+        let index2 = (row2 - 1) * 8 + col2
+        let target = SquareSet(rawValue: 1 << index2)
+
+        let castleSource: SquareSet = turnToMove == .white ? .e1 : .e8
+        let kingsideTarget: SquareSet = turnToMove == .white ? .g1 : .g8
+        let queensideTarget: SquareSet = turnToMove == .white ? .c1 : .c8
+        let castleTargets = kingsideTarget.union(queensideTarget)
+
+        let promoRank: SquareSet = turnToMove == .white ? .rank8 : .rank1
+
+        if pieces[turnToMove, .king] == source,
+           source == castleSource,
+           castleTargets.contains(target) {
+            if target == kingsideTarget {
+                move = .castle(.kingside)
+            } else {
+                move = .castle(.queenside)
+            }
+        } else if pieces[turnToMove, .pawn].contains(source),
+                  enPassant == target {
+            move = .enPassant(from: source, to: target)
+        } else if pieces[turnToMove, .pawn].contains(source),
+                  promoRank.contains(target),
+                  chars.count == 5,
+                  let piece = PieceType(from: chars[4]) {
+            move = .promotion(from: source, piece: piece)
+        } else if pieces[turnToMove.opponent].contains(target) {
+            move = .capture(from: source, to: target)
+        } else {
+            move = .quiet(from: source, to: target)
+        }
+
+        make(move: move)
     }
 }

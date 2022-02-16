@@ -18,6 +18,16 @@ public struct PieceCollection {
                                         count: Color.allCases.count)
     }
 
+    public init(pieces: [[SquareSet]]) {
+        precondition(pieces.count == Color.allCases.count, "Pieces is the wrong size")
+        precondition(pieces[0].count == PieceType.allCases.count, "Pieces is the wrong size")
+
+        self.init()
+        self.pieces = pieces
+
+        updateAttackedSquares()
+    }
+
     public mutating func clear(squares: SquareSet) {
         for color in 0 ..< pieces.count {
             for piece in 0 ..< pieces[color].count {
@@ -239,5 +249,29 @@ public struct PieceCollection {
 
             return nil
         }
+    }
+}
+
+public extension PieceCollection {
+    static var startingPosition: PieceCollection {
+        var position = PieceCollection()
+
+        position.pieces[Color.white][PieceType.pawn] = .rank2
+        position.pieces[Color.white][PieceType.rook] = [.a1, .h1]
+        position.pieces[Color.white][PieceType.knight] = [.b1, .g1]
+        position.pieces[Color.white][PieceType.bishop] = [.c1, .f1]
+        position.pieces[Color.white][PieceType.queen] = [.d1]
+        position.pieces[Color.white][PieceType.king] = [.e1]
+
+        position.pieces[Color.black][PieceType.pawn] = .rank7
+        position.pieces[Color.black][PieceType.rook] = [.a8, .h8]
+        position.pieces[Color.black][PieceType.knight] = [.b8, .g8]
+        position.pieces[Color.black][PieceType.bishop] = [.c8, .f8]
+        position.pieces[Color.black][PieceType.queen] = [.d8]
+        position.pieces[Color.black][PieceType.king] = [.e8]
+
+        position.updateAttackedSquares()
+
+        return position
     }
 }
