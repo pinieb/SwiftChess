@@ -2,7 +2,13 @@ import ChessKit
 import Foundation
 
 class Engine {
-    var position = BitBoard()
+    private var position = BitBoard()
+
+    private let moveSelector: MoveSelector
+
+    init(moveSelector: MoveSelector) {
+        self.moveSelector = moveSelector
+    }
 
     public var nextLine: () -> String? = {
         guard let line = readLine() else { return nil }
@@ -33,12 +39,9 @@ class Engine {
             case "ucinewgame": startNewGame()
             case "position": updatePosition(components.map { String($0) })
 
-            case "go":
-                let moves = MoveGenerator.generateMoves(from: position)
-                let move = moves[Int.random(in: 0 ..< moves.count)]
-                sendMessage("bestmove \(move.longAlgebraicNotation(color: position.turnToMove))")
+            case "go": think()
+            case "stop": selectMove()
 
-            case "stop": continue
             case "ponderhit": continue
             case "quit": continue
 
@@ -75,5 +78,26 @@ class Engine {
                 position.playLongAlgebraicMove($0)
             }
         }
+
+        moveSelector.update(position: position)
+    }
+
+    private func think() {
+        moveSelector.beginSearch {
+            sendMessage($0)
+        } completion: { move in
+            guard let move = move else { return }
+            send(move: move)
+        }
+    }
+
+    private func selectMove() {
+        guard let move = moveSelector.selectMove() else { return }
+        send(move: move)
+    }
+
+    private func send(move: Move) {
+        let notation = move.longAlgebraicNotation(color: position.turnToMove)
+        sendMessage("bestmove \(notation)")
     }
 }

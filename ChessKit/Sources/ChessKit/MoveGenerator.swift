@@ -245,8 +245,8 @@ public class MoveGenerator {
         return moves
     }
 
-    public static func kingMoves(color: Color,
-                                 pieces: PieceCollection) -> [Move] {
+    private static func kingMoves(color: Color,
+                                  pieces: PieceCollection) -> [Move] {
         var moves = [Move]()
 
         let source = pieces[color, .king]
@@ -270,8 +270,8 @@ public class MoveGenerator {
         return moves
     }
 
-    public static func castles(color: Color,
-                               position: BitBoard) -> [Move] {
+    private static func castles(color: Color,
+                                position: BitBoard) -> [Move] {
         guard !position.pieces.isInCheck(color: color) else { return [] }
 
         var moves = [Move]()

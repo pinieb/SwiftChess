@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		82863F9C27BB291800AB7D60 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82863F9B27BB291800AB7D60 /* Engine.swift */; };
+		82863FA327BDCF6500AB7D60 /* RandomMoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82863FA227BDCF6500AB7D60 /* RandomMoveSelector.swift */; };
+		82863FA527BDD0C200AB7D60 /* MoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82863FA427BDD0C200AB7D60 /* MoveSelector.swift */; };
 		82CC580427B1FC7500019B1A /* ChessKit in Frameworks */ = {isa = PBXBuildFile; productRef = 82CC580327B1FC7500019B1A /* ChessKit */; };
 		82DB4F7A278D344200CCCD73 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB4F79278D344200CCCD73 /* main.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +28,8 @@
 
 /* Begin PBXFileReference section */
 		82863F9B27BB291800AB7D60 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		82863FA227BDCF6500AB7D60 /* RandomMoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomMoveSelector.swift; sourceTree = "<group>"; };
+		82863FA427BDD0C200AB7D60 /* MoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveSelector.swift; sourceTree = "<group>"; };
 		82DB4F76278D344200CCCD73 /* SwiftChess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SwiftChess; sourceTree = BUILT_PRODUCTS_DIR; };
 		82DB4F79278D344200CCCD73 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		82DB4F80278D34D200CCCD73 /* ChessKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChessKit; sourceTree = "<group>"; };
@@ -43,6 +47,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		82863FA127BDCF4B00AB7D60 /* MoveSelectors */ = {
+			isa = PBXGroup;
+			children = (
+				82863FA427BDD0C200AB7D60 /* MoveSelector.swift */,
+				82863FA227BDCF6500AB7D60 /* RandomMoveSelector.swift */,
+			);
+			path = MoveSelectors;
+			sourceTree = "<group>";
+		};
 		82CC580227B1FC6200019B1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +84,7 @@
 		82DB4F78278D344200CCCD73 /* SwiftChess */ = {
 			isa = PBXGroup;
 			children = (
+				82863FA127BDCF4B00AB7D60 /* MoveSelectors */,
 				82DB4F79278D344200CCCD73 /* main.swift */,
 				82863F9B27BB291800AB7D60 /* Engine.swift */,
 			);
@@ -138,6 +152,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82863FA327BDCF6500AB7D60 /* RandomMoveSelector.swift in Sources */,
+				82863FA527BDD0C200AB7D60 /* MoveSelector.swift in Sources */,
 				82DB4F7A278D344200CCCD73 /* main.swift in Sources */,
 				82863F9C27BB291800AB7D60 /* Engine.swift in Sources */,
 			);
