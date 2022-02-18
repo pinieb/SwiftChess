@@ -4,6 +4,7 @@ public enum Move {
     case enPassant(from: SquareSet, to: SquareSet)
     case castle(_ side: Castle)
     case promotion(from: SquareSet, piece: PieceType)
+    case pass
 }
 
 extension Move: CustomStringConvertible {
@@ -26,6 +27,8 @@ extension Move: CustomStringConvertible {
             source = s
             target = t
             action = "x"
+        case .pass:
+            return "pass"
         }
 
         return "\(source)\(action)\(target)"
@@ -60,6 +63,8 @@ public extension Move {
             source = s
             target = t
 
+        case .pass:
+            return "pass"
         }
 
         return "\(source)\(target)\(promotion)"

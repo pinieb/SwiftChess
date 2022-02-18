@@ -117,6 +117,15 @@ public struct SquareSet: OptionSet {
             body(SquareSet(rawValue: 1 << $0))
         }
     }
+
+    public func count() -> Int {
+        var count = 0
+        rawValue.forEach { _ in
+            count += 1
+        }
+
+        return count
+    }
 }
 
 extension SquareSet: ExpressibleByIntegerLiteral {

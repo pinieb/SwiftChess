@@ -1,6 +1,6 @@
 public struct BitBoard: Board {
     var states = [GameState()]
-    var pieces: PieceCollection
+    public private(set) var pieces: PieceCollection
 
     public var turnToMove: Color { states.last!.turnToMove }
     public var enPassant: SquareSet { states.last!.enPassant }
@@ -87,6 +87,10 @@ public struct BitBoard: Board {
         case let .quiet(source, target),
             let .capture(source, target):
             nextState = playMove(source: source, target: target)
+
+        case .pass:
+            nextState = states.last!
+            nextState.turnToMove = turnToMove.opponent
         }
 
         states.append(nextState)
@@ -198,7 +202,7 @@ public struct BitBoard: Board {
         return nextState
     }
 
-    mutating func unmake(move: Move) {
+    public mutating func unmake(move: Move) {
         guard states.count > 1 else { return }
 
         switch move {
@@ -214,6 +218,8 @@ public struct BitBoard: Board {
             let .capture(source, target):
             undoMove(source: source,
                      target: target)
+        case .pass:
+            states.removeLast()
         }
     }
 

@@ -1,7 +1,6 @@
 import Foundation
-import AppKit
 
-extension Int {
+public extension Int {
     subscript(_ index: Int) -> Bool {
         get {
             return self & (1 << Swift.max(0, Swift.min(index, 63))) != 0

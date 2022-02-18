@@ -3,5 +3,7 @@ import Darwin
 
 setbuf(__stdoutp, nil)
 
-var engine = Engine(moveSelector: RandomMoveSelector())
+let moveSelector = GreedyMoveSelector(evaluator: BasicEvaluator())
+var engine = Engine(moveSelector: moveSelector)
 engine.run()
+

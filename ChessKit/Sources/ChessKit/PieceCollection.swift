@@ -1,7 +1,7 @@
 public struct PieceCollection {
     private var pieces: [[SquareSet]]
 
-    private(set) var attackedSquares: [SquareSet]
+    public private(set) var attackedSquares: [SquareSet]
     private(set) var kingDangerSquares: [SquareSet]
 
     public var all: SquareSet {
