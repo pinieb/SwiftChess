@@ -100,4 +100,16 @@ class Engine {
         let notation = move.longAlgebraicNotation(color: position.turnToMove)
         sendMessage("bestmove \(notation)")
     }
+
+    public func testSpeed(n: Int) {
+        let evaluator = BasicEvaluator()
+        let move = Move.quiet(from: .e2, to: .e4)
+
+        for i in 0 ..< n {
+            position.make(move: move)
+            _ = evaluator.evaluate(position: position)
+            position.unmake(move: move)
+            print(i)
+        }
+    }
 }
