@@ -284,7 +284,7 @@ public class MoveGenerator {
 
         let dangerSquares = position.pieces.kingDangerSquares[color]
 
-        let canKingsideCastle = position.states.last?.castlingRights[position.turnToMove.rawValue].contains(.kingside) ?? false
+        let canKingsideCastle = position.states.last?.castlingRights[color].contains(.kingside) ?? false
 
         var rookSquare: SquareSet = color == .white ? [.h1] : [.h8]
         var hasRook = position.pieces[color, .rook].contains(rookSquare)
@@ -295,7 +295,7 @@ public class MoveGenerator {
             moves.append(.castle(.kingside))
         }
 
-        let canQueensideCastle = position.states.last?.castlingRights[position.turnToMove.rawValue].contains(.queenside) ?? false
+        let canQueensideCastle = position.states.last?.castlingRights[color].contains(.queenside) ?? false
 
         rookSquare = color == .white ? [.a1] : [.a8]
         hasRook = position.pieces[color, .rook].contains(rookSquare)

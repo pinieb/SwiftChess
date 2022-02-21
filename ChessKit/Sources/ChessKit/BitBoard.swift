@@ -286,7 +286,7 @@ public struct BitBoard: Board {
         set(square: targetSquare, to: nil)
 
         // put enemy pawn back on the board
-        let otherPawn = target.shifted(by: turnToMove == .white ? 8 : -8)
+        let otherPawn = target.shifted(by: turnToMove == .white ? -8 : 8)
         let otherPawnSquare = SquareIndex(rawValue: otherPawn.rawValue.first!)!
         set(square: otherPawnSquare, to: Piece(color: turnToMove.opponent,
                                                type: .pawn))

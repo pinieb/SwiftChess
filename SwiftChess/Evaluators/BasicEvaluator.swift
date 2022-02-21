@@ -11,14 +11,14 @@ class BasicEvaluator: Evaluator {
     ]
 
     public func evaluate(position: BitBoard) -> Double {
-        let colorMultiplier = position.turnToMove == .white ? 1.0 : -1.0
+        //let colorMultiplier = position.turnToMove == .white ? 1.0 : -1.0
 
         var score = 0.0
 
         score += materialScore(position: position)
         score += mobilityScore(position: position)
 
-        return score * colorMultiplier
+        return score //* colorMultiplier
     }
 
     func materialScore(position: BitBoard) -> Double {

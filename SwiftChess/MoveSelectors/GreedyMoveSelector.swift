@@ -33,7 +33,12 @@ class GreedyMoveSelector: MoveSelector {
     func selectMove() -> Move? {
         guard !scoredMoves.isEmpty else { return nil }
 
-        scoredMoves.sort { $0.1 < $1.1 }
+        if position.turnToMove == .white {
+            scoredMoves.sort { $0.1 > $1.1 }
+        } else {
+            scoredMoves.sort { $0.1 < $1.1 }
+        }
+        
         var bestMoves = scoredMoves.filter { $0.1 == scoredMoves.first!.1 }
         bestMoves.shuffle()
 
