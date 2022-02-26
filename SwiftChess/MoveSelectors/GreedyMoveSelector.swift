@@ -21,7 +21,8 @@ class GreedyMoveSelector: MoveSelector {
                      completion: (Move?) -> ()) {
         for move in moves {
             position.make(move: move)
-            let score = evaluator.evaluate(position: position)
+            let newMoves = MoveGenerator.generateMoves(from: position)
+            let score = evaluator.evaluate(position: position, moves: newMoves)
             position.unmake(move: move)
 
             scoredMoves.append((move, score))

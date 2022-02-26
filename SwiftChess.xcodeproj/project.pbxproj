@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		822AB08C27C2DCB700428312 /* MinimaxMoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822AB08B27C2DCB700428312 /* MinimaxMoveSelector.swift */; };
+		822AB09C27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822AB09B27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift */; };
 		8271B80927BF21C900336093 /* BasicEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271B80827BF21C900336093 /* BasicEvaluator.swift */; };
 		8271B80B27BF258200336093 /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271B80A27BF258200336093 /* Evaluator.swift */; };
 		8271B80D27BF2D2300336093 /* GreedyMoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271B80C27BF2D2300336093 /* GreedyMoveSelector.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		822AB08B27C2DCB700428312 /* MinimaxMoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimaxMoveSelector.swift; sourceTree = "<group>"; };
+		822AB09B27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepeningMinimaxMoveSelector.swift; sourceTree = "<group>"; };
 		8271B80827BF21C900336093 /* BasicEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicEvaluator.swift; sourceTree = "<group>"; };
 		8271B80A27BF258200336093 /* Evaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluator.swift; sourceTree = "<group>"; };
 		8271B80C27BF2D2300336093 /* GreedyMoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreedyMoveSelector.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				822AB08B27C2DCB700428312 /* MinimaxMoveSelector.swift */,
 				82863FA427BDD0C200AB7D60 /* MoveSelector.swift */,
 				82863FA227BDCF6500AB7D60 /* RandomMoveSelector.swift */,
+				822AB09B27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift */,
 			);
 			path = MoveSelectors;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 				8271B80927BF21C900336093 /* BasicEvaluator.swift in Sources */,
 				82DB4F7A278D344200CCCD73 /* main.swift in Sources */,
 				82863F9C27BB291800AB7D60 /* Engine.swift in Sources */,
+				822AB09C27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift in Sources */,
 				8271B80B27BF258200336093 /* Evaluator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

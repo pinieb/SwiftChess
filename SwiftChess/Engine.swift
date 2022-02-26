@@ -107,7 +107,8 @@ class Engine {
 
         for i in 0 ..< n {
             position.make(move: move)
-            _ = evaluator.evaluate(position: position)
+            let newMoves = MoveGenerator.generateMoves(from: position)
+            _ = evaluator.evaluate(position: position, moves: newMoves)
             position.unmake(move: move)
             print(i)
         }

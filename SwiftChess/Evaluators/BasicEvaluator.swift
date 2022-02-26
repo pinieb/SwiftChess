@@ -1,6 +1,8 @@
 import ChessKit
 
 class BasicEvaluator: Evaluator {
+    let checkmateScores = [10_000.0, -10_000.0]
+
     let pieceScores: [PieceType : Double] = [
         .king: 200.0,
         .queen: 9.0,
@@ -10,15 +12,17 @@ class BasicEvaluator: Evaluator {
         .pawn: 1.0,
     ]
 
-    public func evaluate(position: BitBoard) -> Double {
-        //let colorMultiplier = position.turnToMove == .white ? 1.0 : -1.0
-
+    public func evaluate(position: BitBoard, moves: [Move]) -> Double {
         var score = 0.0
+
+        guard moves.count > 0 else {
+            return position.pieces.isInCheck(color: position.turnToMove) ? checkmateScores[position.turnToMove.opponent] : 0.0
+        }
 
         score += materialScore(position: position)
         score += mobilityScore(position: position)
 
-        return score //* colorMultiplier
+        return score
     }
 
     func materialScore(position: BitBoard) -> Double {

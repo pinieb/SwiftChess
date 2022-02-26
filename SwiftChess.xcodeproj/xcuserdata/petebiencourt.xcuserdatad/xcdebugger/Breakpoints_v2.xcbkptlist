@@ -23,88 +23,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "65BFF3C6-FD45-4C57-8F85-D38760F3D4F9"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SwiftChess/MoveSelectors/GreedyMoveSelector.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5A5A3941-F8F4-45AF-A9C0-C55D086CDDE1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SwiftChess/MoveSelectors/MinimaxMoveSelector.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "minimax(moves2:depth:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F2846417-AA76-4383-9E57-E63C0867EE0E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SwiftChess/MoveSelectors/MinimaxMoveSelector.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "minimax(moves2:depth:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7E175184-E3B0-4E9F-8BCE-4404970B95B4"
-            shouldBeEnabled = "Yes"
-            condition = "color == .black"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ChessKit/Sources/ChessKit/MoveGenerator.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
-            landmarkName = "castles(color:position:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "88FCC5B7-8DCA-4BB7-B341-995115D3A243"
-            shouldBeEnabled = "Yes"
-            condition = "color == .black"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ChessKit/Sources/ChessKit/MoveGenerator.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "306"
-            endingLineNumber = "306"
-            landmarkName = "castles(color:position:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "0921BF5A-A3B9-4B7B-AB48-8CC1786667CE"
             shouldBeEnabled = "Yes"
             condition = "kingStart == .e8"
@@ -116,23 +34,6 @@
             startingLineNumber = "256"
             endingLineNumber = "256"
             landmarkName = "undoCastle(side:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AB946D68-C2E8-43FA-A9D5-0A4E6911C7FE"
-            shouldBeEnabled = "Yes"
-            condition = "turnToMove == .black"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ChessKit/Sources/ChessKit/BitBoard.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "playCastle(side:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -155,39 +56,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AE845D1B-1544-47BC-BE36-242F50B1E2E8"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SwiftChess/MoveSelectors/MinimaxMoveSelector.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "minimax(moves2:depth:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D28C2B20-2D5A-4F4F-80AD-FC7A56A923E2"
-            shouldBeEnabled = "Yes"
-            condition = "color == position.turnToMove"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SwiftChess/MoveSelectors/MinimaxMoveSelector.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "minimax(moves2:depth:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "9E24A4FB-52CC-4E1E-B356-9B9EF9B80E0F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -198,22 +66,6 @@
             startingLineNumber = "178"
             endingLineNumber = "178"
             landmarkName = "playMove(source:target:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EB9CDFB0-7496-4CEA-9177-C5EE3164DB65"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ChessKit/Sources/ChessKit/BitBoard.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "make(move:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -237,17 +89,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5E6A4ACC-7F8E-4077-9F6D-D8D15B24A08A"
-            shouldBeEnabled = "Yes"
-            condition = "turnToMove == nextState.turnToMove"
+            uuid = "D7FDDFBD-6BA7-4FC8-B498-EF5434CDD828"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ChessKit/Sources/ChessKit/BitBoard.swift"
+            filePath = "SwiftChess/MoveSelectors/GreedyMoveSelector.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "make(move:)"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "selectMove()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

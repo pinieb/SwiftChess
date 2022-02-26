@@ -2,7 +2,7 @@ public enum Color: Int {
      case white
      case black
 
-    var opponent: Color {
+    public var opponent: Color {
         switch self {
         case .white:
             return .black

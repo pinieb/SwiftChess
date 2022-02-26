@@ -20,7 +20,8 @@ class RandomMoveSelector: MoveSelector {
         var i = 1
         moves.forEach {
             position.make(move: $0)
-            let score = evaluator.evaluate(position: position)
+            let newMoves = MoveGenerator.generateMoves(from: position)
+            let score = evaluator.evaluate(position: position, moves: newMoves)
             position.unmake(move: $0)
             
             outputCallback("info score cp \(Int(score * 100)) currmove \($0.longAlgebraicNotation(color: position.turnToMove)) currmovenumber \(i)")
