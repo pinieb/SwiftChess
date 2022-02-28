@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8201F9D027CC38C20039191C /* MinimaxOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8201F9CF27CC38C20039191C /* MinimaxOperation.swift */; };
+		8201F9D227CC41960039191C /* AsyncMinimaxMoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8201F9D127CC41960039191C /* AsyncMinimaxMoveSelector.swift */; };
 		822AB08C27C2DCB700428312 /* MinimaxMoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822AB08B27C2DCB700428312 /* MinimaxMoveSelector.swift */; };
 		822AB09C27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822AB09B27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift */; };
 		8271B80927BF21C900336093 /* BasicEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271B80827BF21C900336093 /* BasicEvaluator.swift */; };
@@ -32,6 +34,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8201F9CF27CC38C20039191C /* MinimaxOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimaxOperation.swift; sourceTree = "<group>"; };
+		8201F9D127CC41960039191C /* AsyncMinimaxMoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncMinimaxMoveSelector.swift; sourceTree = "<group>"; };
 		822AB08B27C2DCB700428312 /* MinimaxMoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimaxMoveSelector.swift; sourceTree = "<group>"; };
 		822AB09B27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepeningMinimaxMoveSelector.swift; sourceTree = "<group>"; };
 		8271B80827BF21C900336093 /* BasicEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicEvaluator.swift; sourceTree = "<group>"; };
@@ -57,6 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8201F9CE27CC38960039191C /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				8201F9CF27CC38C20039191C /* MinimaxOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
 		8271B80727BF21AA00336093 /* Evaluators */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +81,7 @@
 		82863FA127BDCF4B00AB7D60 /* MoveSelectors */ = {
 			isa = PBXGroup;
 			children = (
+				8201F9D127CC41960039191C /* AsyncMinimaxMoveSelector.swift */,
 				8271B80C27BF2D2300336093 /* GreedyMoveSelector.swift */,
 				822AB08B27C2DCB700428312 /* MinimaxMoveSelector.swift */,
 				82863FA427BDD0C200AB7D60 /* MoveSelector.swift */,
@@ -108,6 +121,7 @@
 			children = (
 				8271B80727BF21AA00336093 /* Evaluators */,
 				82863FA127BDCF4B00AB7D60 /* MoveSelectors */,
+				8201F9CE27CC38960039191C /* Operations */,
 				82DB4F79278D344200CCCD73 /* main.swift */,
 				82863F9B27BB291800AB7D60 /* Engine.swift */,
 			);
@@ -176,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8271B80D27BF2D2300336093 /* GreedyMoveSelector.swift in Sources */,
+				8201F9D227CC41960039191C /* AsyncMinimaxMoveSelector.swift in Sources */,
 				82863FA327BDCF6500AB7D60 /* RandomMoveSelector.swift in Sources */,
 				82863FA527BDD0C200AB7D60 /* MoveSelector.swift in Sources */,
 				822AB08C27C2DCB700428312 /* MinimaxMoveSelector.swift in Sources */,
@@ -184,6 +199,7 @@
 				82863F9C27BB291800AB7D60 /* Engine.swift in Sources */,
 				822AB09C27C48A4000428312 /* DeepeningMinimaxMoveSelector.swift in Sources */,
 				8271B80B27BF258200336093 /* Evaluator.swift in Sources */,
+				8201F9D027CC38C20039191C /* MinimaxOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,7 +4,9 @@ import QuartzCore
 
 setbuf(__stdoutp, nil)
 
-let moveSelector = MinimaxMoveSelector(evaluator: BasicEvaluator(), maxDepth: 3)
+let moveSelector = AsyncMinimaxMoveSelector(evaluator: BasicEvaluator(),
+                                            maxDepth: 3,
+                                            threads: 4)
 var engine = Engine(moveSelector: moveSelector)
 engine.run()
 
